@@ -6,7 +6,10 @@ function App() {
     return (
         <div className="bg-gray-200 h-screen w-screen flex flex-col items-center p-6 gap-10">
             <h1 className="text-3xl underline font-bold w-max">Todo List</h1>
-            <div className="w-3/4 flex justify-center flex-wrap-reverse gap-10">
+            <div
+                className="container w-3/4 flex justify-center items-baseline p-3 overflow-y-scroll flex-wrap-reverse gap-10 relative"
+                style={{maxHeight: 600}}
+            >
                 <List />
                 <Form />
             </div>
