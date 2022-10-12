@@ -1,5 +1,5 @@
 import React from 'react';
-import {AiOutlineCheckCircle, AiOutlineCloseCircle} from "react-icons/all";
+import {AiOutlineCheckCircle, AiOutlineCloseCircle, BsTrash} from "react-icons/all";
 import {useMutation, useQueryClient} from "react-query";
 import axios from "axios";
 
@@ -26,11 +26,14 @@ const Todo = ({todo}: PropType) => {
 			style={{minWidth: 320}}
 		>
 			<p className="font-bold text-xl">{todo.content}</p>
-			{
-				todo.completed ?
-					<AiOutlineCloseCircle className="cursor-pointer text-xl text-xl text-red-700" onClick={mutate} />
-					: <AiOutlineCheckCircle className="cursor-pointer text-xl text-xl text-green-700" onClick={mutate} />
-			}
+			<div className="flex items-center gap-2">
+				{
+					todo.completed ?
+						<AiOutlineCloseCircle className="cursor-pointer text-xl text-xl text-red-700" onClick={mutate} />
+						: <AiOutlineCheckCircle className="cursor-pointer text-xl text-xl text-green-700" onClick={mutate} />
+				}
+				<BsTrash />
+			</div>
 		</li>
 
 	);

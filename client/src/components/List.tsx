@@ -12,10 +12,9 @@ const List = ({url}: {url: string}) => {
 		refetch()
 		console.log(url)
 	}, [url])
-	// console.log(data)
 
 	return (
-		<ul className="flex-1 flex flex-col gap-4 min-w-max">
+		<ul className="flex-1 flex flex-col gap-4 min-w-max list">
 			<>
 				{isLoading || isFetching ? <p>Loading...</p> :
 					(Object.entries(data.data).length > 0 ?
