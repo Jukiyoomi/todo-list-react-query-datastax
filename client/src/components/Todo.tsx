@@ -1,16 +1,39 @@
 import React from 'react';
-import {AiOutlineCheckCircle, AiOutlineCloseCircle} from "react-icons/all";
+import {AiOutlineCheckCircle, AiOutlineCloseCircle, BsTrash} from "react-icons/all";
+import {useMutation, useQueryClient} from "react-query";
+import axios from "axios";
 
-const Todo = () => {
+type Todo = {content: string, completed: boolean, createdAt: number, id:string}
+type PropType = {todo: Todo}
+
+
+const Todo = ({todo}: PropType) => {
+	const queryClient = useQueryClient()
+	const oppositeBoolean = !todo.completed
+
+
+	const {mutate, isSuccess} = useMutation(() => {
+		return axios.patch('http://localhost:4000/todos/update/'+ todo.id, {
+			completed: oppositeBoolean,
+		}).then(() => {
+			queryClient.invalidateQueries(['todos'])
+		})
+	})
+
 	return (
 		<li
-			className="todo relative flex justify-between md:flex-row gap-4 items-center px-6 bg-white py-3 rounded-xl shadow shadow-xl hover:shadow-lg transition border-l-8 border-l-green-700"
+			className={`todo relative flex justify-between md:flex-row gap-4 items-center px-6 bg-white py-3 rounded-xl shadow shadow-xl hover:shadow-lg transition border-l-8 ${todo.completed ? 'border-l-green-700' : 'border-l-red-700'}`}
 			style={{minWidth: 320}}
 		>
-			<p className="font-bold text-xl">Sortir la poubelle</p>
-			{/*<button className="cursor-pointer text-sm">Complete This todo</button>*/}
-			<AiOutlineCheckCircle className="cursor-pointer text-xl text-xl text-green-700" />
-			<AiOutlineCloseCircle className="cursor-pointer text-xl text-xl text-red-700" />
+			<p className="font-bold text-xl">{todo.content}</p>
+			<div className="flex items-center gap-2">
+				{
+					todo.completed ?
+						<AiOutlineCloseCircle className="cursor-pointer text-xl text-xl text-red-700" onClick={mutate} />
+						: <AiOutlineCheckCircle className="cursor-pointer text-xl text-xl text-green-700" onClick={mutate} />
+				}
+				<BsTrash />
+			</div>
 		</li>
 
 	);
