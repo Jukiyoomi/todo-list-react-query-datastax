@@ -12,7 +12,8 @@ const Form = ({setUrl}: {setUrl: Function}) => {
 		if(!todoText.current.value) return
 		console.log(todoText.current.value)
 		return axios.post('http://localhost:4000/todos/new', {
-			content: todoText.current.value.toString()
+			content: todoText.current.value.toString(),
+			createdAt: Date.now()
 		}).then(() => {
 			todoText.current.value = ""
 		}).then(() => {

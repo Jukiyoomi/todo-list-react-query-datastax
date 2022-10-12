@@ -1,10 +1,25 @@
 import React from 'react';
 import {AiOutlineCheckCircle, AiOutlineCloseCircle} from "react-icons/all";
+import {useMutation, useQueryClient} from "react-query";
+import axios from "axios";
 
-type Todo = {content: string, completed: boolean}
-type PropType = {id: string, todo: Todo}
+type Todo = {content: string, completed: boolean, createdAt: number, id:string}
+type PropType = {todo: Todo}
 
-const Todo = ({id, todo}: PropType) => {
+
+const Todo = ({todo}: PropType) => {
+	const queryClient = useQueryClient()
+	const oppositeBoolean = !todo.completed
+
+
+	const {mutate, isSuccess} = useMutation(() => {
+		return axios.patch('http://localhost:4000/todos/update/'+ todo.id, {
+			completed: oppositeBoolean,
+		}).then(() => {
+			queryClient.invalidateQueries(['todos'])
+		})
+	})
+
 	return (
 		<li
 			className={`todo relative flex justify-between md:flex-row gap-4 items-center px-6 bg-white py-3 rounded-xl shadow shadow-xl hover:shadow-lg transition border-l-8 ${todo.completed ? 'border-l-green-700' : 'border-l-red-700'}`}
@@ -13,8 +28,8 @@ const Todo = ({id, todo}: PropType) => {
 			<p className="font-bold text-xl">{todo.content}</p>
 			{
 				todo.completed ?
-					<AiOutlineCloseCircle className="cursor-pointer text-xl text-xl text-red-700" />
-					: <AiOutlineCheckCircle className="cursor-pointer text-xl text-xl text-green-700" />
+					<AiOutlineCloseCircle className="cursor-pointer text-xl text-xl text-red-700" onClick={mutate} />
+					: <AiOutlineCheckCircle className="cursor-pointer text-xl text-xl text-green-700" onClick={mutate} />
 			}
 		</li>
 

@@ -21,7 +21,7 @@ const List = ({url}: {url: string}) => {
 					(Object.entries(data.data).length > 0 ?
 						<>
 							<p>Total : {Object.entries(data.data).length}</p>
-							{Object.entries(data.data).map(([key, value])=> <Todo key={key} id={key} todo={value}/>)}
+							{data.data.map((todo: { id?: any; content?: string; completed?: boolean; })=> <Todo key={todo.id} todo={todo} />)}
 						</> :
 						<p>No todos</p>
 					)

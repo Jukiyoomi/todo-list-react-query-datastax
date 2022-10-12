@@ -16,7 +16,7 @@ module.exports.getTodos = async (req, res) => {
             }
         )
         console.log(status)
-        // data.sort(([a, b]) => a.createdAt < b.createdAt)
+        // data = {data: data.sort(([a, b]) => a.createdAt < b.createdAt)}
         data = {data:sortObject(data.data, "createdAt")}
         // console.log(sortObject(data, "createdAt"))
         res.json(data)
@@ -73,7 +73,6 @@ module.exports.createTodo = async (req, res) => {
             'https://cefb09fe-9970-4f0c-bfb5-8c8d865bf50c-europe-west1.apps.astra.datastax.com/api/rest/v2/namespaces/todos/collections/list',
             {
                 ...req.body,
-                createdAt: Date.now(),
                 completed: false,
             },
             {
@@ -89,7 +88,7 @@ module.exports.createTodo = async (req, res) => {
 
 module.exports.updateTodo = async (req, res) => {
     const { body } = req
-    if (!body.content) return res.json({ message: 'Please enter info for your todo' })
+    if (!body) return res.json({ message: 'Please enter info for your todo' })
     try {
         const { data, status } = await axios.patch(
             'https://cefb09fe-9970-4f0c-bfb5-8c8d865bf50c-europe-west1.apps.astra.datastax.com/api/rest/v2/namespaces/todos/collections/list/' + req.params.id,
@@ -131,10 +130,13 @@ function sortObject(data, attr) {
         if (data.hasOwnProperty(prop)) {
             let obj = {};
             obj[prop] = data[prop];
+            // console.log(prop)
             obj.tempSortName = data[prop][attr];
             arr.push(obj);
         }
+
     }
+
 
     arr.sort(function(a, b) {
         let at = a.tempSortName,
@@ -142,20 +144,25 @@ function sortObject(data, attr) {
         return at < bt ? 1 : ( at > bt ? -1 : 0 );
     });
 
+
     let result = [];
 
     for (let i=0, l=arr.length; i<l; i++) {
         let obj = arr[i];
+        // console.log(arr[i])
         delete obj.tempSortName;
         let id
         for (let prop in obj) {
             if (obj.hasOwnProperty(prop)) {
                 id = prop;
+                // console.log(prop)
             }
         }
         let item = obj[id];
+        item.id = id
         result.push(item);
     }
+    console.log(result)
     return result;
 }
 
