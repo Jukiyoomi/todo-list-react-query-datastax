@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*.container::-webkit-scrollbar {*/
+/*	display: none;*/
+/*}*/
+
+/*!* For IE, Edge and Firefox *!*/
+/*.container {*/
+/*	-ms-overflow-style: none;  !* IE and Edge *!*/
+/*	scrollbar-width: none;  !* Firefox *!*/
+/*}*/
