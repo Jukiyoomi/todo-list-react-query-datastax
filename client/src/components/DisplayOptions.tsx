@@ -2,7 +2,7 @@ import React from 'react';
 
 const DisplayOptions = ({setUrl}: {setUrl: Function}) => {
 	const handleClick = (e: Event) => {
-		const newUrl: string = e.target.dataset.type
+		const newUrl: string = e?.target?.dataset?.type
 		console.log(newUrl)
 		setUrl(`http://localhost:4000/todos/${newUrl}`)
 	}
