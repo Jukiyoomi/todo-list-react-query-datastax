@@ -1,9 +1,9 @@
 import React from 'react';
 import DisplayOptions from "./DisplayOptions";
 
-const Form = () => {
+const Form = ({setUrl}: {setUrl: Function}) => {
 	return (
-		<aside className="flex sticky h-auto md:relative top-0 gap-5 flex-1 flex-col">
+		<aside className="flex md:sticky h-auto relative top-0 gap-5 flex-1 flex-col">
 			<form
 				className="flex-1 flex items-center px-6 bg-white py-5 rounded-xl shadow shadow-xl"
 				style={{maxHeight: 362}}
@@ -14,7 +14,7 @@ const Form = () => {
 				</div>
 				<button type="submit"></button>
 			</form>
-			<DisplayOptions/>
+			<DisplayOptions setUrl={setUrl}/>
 		</aside>
 	);
 };
