@@ -12,12 +12,20 @@ const Todo = ({todo}: PropType) => {
 	const oppositeBoolean = !todo.completed
 
 
-	const {mutate, isSuccess} = useMutation(() => {
-		return axios.patch('http://localhost:4000/todos/update/'+ todo.id, {
+	const toggle = useMutation(() => {
+		return axios
+			.patch('http://localhost:4000/todos/update/'+ todo.id, {
 			completed: oppositeBoolean,
-		}).then(() => {
+		})
+			.then(() => {
 			queryClient.invalidateQueries(['todos'])
 		})
+	})
+
+	const deletion = useMutation(() => {
+		return axios
+			.delete('http://localhost:4000/todos/delete/'+ todo.id)
+			.then(() => queryClient.invalidateQueries(['todos']))
 	})
 
 	return (
@@ -25,14 +33,14 @@ const Todo = ({todo}: PropType) => {
 			className={`todo relative flex justify-between md:flex-row gap-4 items-center px-6 bg-white py-3 rounded-xl shadow shadow-xl hover:shadow-lg transition border-l-8 ${todo.completed ? 'border-l-green-700' : 'border-l-red-700'}`}
 			style={{minWidth: 320}}
 		>
-			<p className="font-bold text-xl">{todo.content}</p>
+			<p className="font-bold text-xl" ondblCLick={}>{todo.content}</p>
 			<div className="flex items-center gap-2">
 				{
 					todo.completed ?
-						<AiOutlineCloseCircle className="cursor-pointer text-xl text-xl text-red-700" onClick={mutate} />
-						: <AiOutlineCheckCircle className="cursor-pointer text-xl text-xl text-green-700" onClick={mutate} />
+						<AiOutlineCloseCircle className="cursor-pointer text-xl text-red-700" onClick={toggle.mutate} />
+						: <AiOutlineCheckCircle className="cursor-pointer text-xl text-green-700" onClick={toggle.mutate} />
 				}
-				<BsTrash />
+				<BsTrash className="cursor-pointer text-xl" onClick={deletion.mutate} />
 			</div>
 		</li>
 
