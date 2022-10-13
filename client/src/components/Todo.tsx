@@ -33,7 +33,7 @@ const Todo = ({todo}: PropType) => {
 			className={`todo relative flex justify-between md:flex-row gap-4 items-center px-6 bg-white py-3 rounded-xl shadow shadow-xl hover:shadow-lg transition border-l-8 ${todo.completed ? 'border-l-green-700' : 'border-l-red-700'}`}
 			style={{minWidth: 320}}
 		>
-			<p className="font-bold text-xl" ondblCLick={}>{todo.content}</p>
+			<p className="font-bold text-xl">{todo.content}</p>
 			<div className="flex items-center gap-2">
 				{
 					todo.completed ?
